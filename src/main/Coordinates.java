@@ -4,7 +4,7 @@ public class Coordinates {
 
     private int x, y;
 
-    Coordinates(int x, int y) {
+    public Coordinates(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -12,10 +12,10 @@ public class Coordinates {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Coordinates that = (Coordinates) o;
 
-        if(x != that.x) return false;
+        if (x != that.x) return false;
         return y == that.y;
     }
 
@@ -34,15 +34,11 @@ public class Coordinates {
         return y;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
+    @Override
     public String toString() {
-        return x + "Y: " + y;
+        return "Coordinates{" +
+                "row=" + x +
+                ", col=" + y +
+                '}';
     }
 }

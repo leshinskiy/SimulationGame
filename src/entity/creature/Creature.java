@@ -2,25 +2,31 @@ package entity.creature;
 
 import entity.Entity;
 import main.Coordinates;
+import main.GameMap;
 
 public abstract class Creature extends Entity {
-
     private final int speed;
     private int health;
 
-    private final String emoji;
+    private String emoji;
 
-    public Creature(int speed, int health, String emoji, Coordinates coordinates){
+    public Creature(int speed, int health, String emoji, Coordinates coordinates) {
         super(coordinates);
         this.health = health;
         this.speed = speed;
         this.emoji = emoji;
     }
 
-    public abstract void makeMove();
+    public abstract void makeMove(GameMap gameMap, Creature creature);
 
     @Override
-    public String toString(){
+    public boolean isStatic(){
+        return false;
+    }
+
+
+    @Override
+    public String getEmoji() {
         return emoji;
     }
 
@@ -32,13 +38,18 @@ public abstract class Creature extends Entity {
         return health;
     }
 
-    public void setHealth(int health){
+    @Override
+    public String toString() {
+        return "Creature{" +
+                "speed=" + speed +
+                ", health=" + health +
+                ", emoji='" + emoji + '\'' +
+                ", coordinates=" + coordinates +
+                '}';
+    }
+
+    public void setHealth(int health) {
         this.health = health;
     }
-
-    public String getEmoji() {
-        return emoji;
-    }
-
 
 }

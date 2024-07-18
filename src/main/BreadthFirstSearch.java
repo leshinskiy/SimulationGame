@@ -2,57 +2,63 @@ package main;
 
 import java.util.*;
 
-import entity.Entity;
-import entity.creature.Predator;
-
 public class BreadthFirstSearch {
-    public void breadthSearch(Coordinates start, Coordinates goal, Entity entity) { // start means where is animal located; goal means what animal is looking for (could be either herbivore or grass)
+    public HashMap<Coordinates, Coordinates> breadthSearch(Coordinates start, Coordinates goal, GameMap gameMap) { // start means where is animal located; goal means what animal is looking for (could be either herbivore or grass)
         Queue<Coordinates> queue = new LinkedList<>();
         queue.add(start);
 
         HashMap<Coordinates, Coordinates> moves = new HashMap<>();
-        List<Coordinates> visited = new ArrayList<>();
-        while(!queue.isEmpty()){
-            Coordinates current = queue.poll();
 
-            if(current.equals(goal)) {
-                HashMap<Coordinates, Coordinates> path = new HashMap<>();
-                Coordinates currentInPath = goal;
-                while(!currentInPath.equals(start)) {
-                    path.put(moves.get(currentInPath), currentInPath);
-                    currentInPath = moves.get(currentInPath);
+        HashMap<Coordinates, Coordinates> path = new HashMap<>();
+
+        Set<Coordinates> visited = new HashSet<>();
+
+        visited.add(start);
+
+
+        while (!queue.isEmpty()) {
+            Coordinates currentInQueue = queue.poll();
+
+            if (currentInQueue.equals(goal)) {
+                Coordinates currentStep = goal;
+
+                while (!currentStep.equals(start)) {
+                    path.put(moves.get(currentStep), currentStep);
+                    currentStep = moves.get(currentStep);
                 }
-                entity.setCoordinates(path.get(start));
-                return;
+                return path;
             }
 
-            ArrayList<Coordinates> neighbours = findCellNeighbours(current);
-            for(Coordinates neighbour : neighbours) {
-                if (!visited.contains(neighbour)) {
-                    visited.add(current);
-                    moves.put(neighbour, current);
-                    queue.add(neighbour);
+
+            ArrayList<Coordinates> neighbours = findCellNeighbours(currentInQueue);
+            ArrayList<Coordinates> unavailableCoordinates = gameMap.getNotAvailableCoordinates();
+            for (Coordinates neighbour : neighbours) {
+                if (unavailableCoordinates.contains(neighbour) || visited.contains(neighbour)) {
+                    continue;
                 }
-
+                moves.put(neighbour, currentInQueue);
+                queue.add(neighbour);
+                visited.add(currentInQueue);
             }
-
         }
+        return path;
     }
 
-    public ArrayList<Coordinates> findCellNeighbours(Coordinates cell){
-        ArrayList<Coordinates> neighbours = new ArrayList<>();
-        if (cell.getX() > 0) {
-            neighbours.add(new Coordinates(cell.getX() - 1, cell.getY()));
+
+        ArrayList<Coordinates> findCellNeighbours (Coordinates cell){
+            ArrayList<Coordinates> neighbours = new ArrayList<>();
+            if (cell.getX() > 0) {
+                neighbours.add(new Coordinates(cell.getX() - 1, cell.getY()));
+            }
+            if (cell.getX() < 9) {
+                neighbours.add(new Coordinates(cell.getX() + 1, cell.getY()));
+            }
+            if (cell.getY() > 0) {
+                neighbours.add(new Coordinates(cell.getX(), cell.getY() - 1));
+            }
+            if (cell.getY() < 9) {
+                neighbours.add(new Coordinates(cell.getX(), cell.getY() + 1));
+            }
+            return neighbours;
         }
-        if (cell.getX() < 9) {
-            neighbours.add(new Coordinates(cell.getX() + 1, cell.getY()));
-        }
-        if (cell.getY() > 0) {
-            neighbours.add(new Coordinates(cell.getX(), cell.getY() - 1));
-        }
-        if (cell.getY() < 9) {
-            neighbours.add(new Coordinates(cell.getX(), cell.getY() + 1));
-        }
-        return neighbours;
-    }
 }

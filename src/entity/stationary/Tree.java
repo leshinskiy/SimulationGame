@@ -11,6 +11,11 @@ public class Tree extends Entity {
     }
 
     public String toString() {
+        return emoji + " " + coordinates;
+    }
+
+    @Override
+    public String getEmoji() {
         return emoji;
     }
 }

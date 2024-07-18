@@ -4,18 +4,18 @@ import entity.Entity;
 import main.Coordinates;
 
 public class Rock extends Entity {
-    public final String emoji;
+    private String emoji = "🌑";
 
-    public Rock(String emoji, Coordinates coordinates){
+    public Rock(Coordinates coordinates){
         super(coordinates);
-        this.emoji = emoji;
-    }
-
-    public String getEmoji() {
-        return this.emoji;
     }
 
     public String toString() {
+        return emoji + " " + coordinates;
+    }
+
+    @Override
+    public String getEmoji() {
         return emoji;
     }
 }

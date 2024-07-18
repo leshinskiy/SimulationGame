@@ -1,12 +1,24 @@
 package main;
-import entity.Entity;
-import java.util.HashMap;
+
+import action.InitAction;
+import action.TurnAction;
 
 public class Simulation {
     public void startSimulation(){
-        HashMap<Coordinates, Entity> field = new HashMap<>();
-        Map map = new Map(field);
+        GameMap gameMap = new GameMap();
         Renderer renderer = new Renderer();
-        renderer.renderField(map);
+        InitAction init = new InitAction();
+        TurnAction turn = new TurnAction();
+        init.initializeMap(gameMap);
+
+
+
+        int i = 0;
+        while(true){
+            renderer.renderField(gameMap);
+            turn.makeTurn(gameMap);
+            System.out.println();
+        }
+
     }
 }

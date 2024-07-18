@@ -6,17 +6,21 @@ import entity.Ground;
 import java.util.HashMap;
 
 public class Renderer {
-    public void renderField(Map map) {
-        for(int col = 0; col < 10; col++){
-            for(int row = 0; row < 10; row++){
-                Coordinates currentCords = new Coordinates(col, row);
-                if(map.isEntity(currentCords)){
-                    System.out.print(map.getEntity(currentCords));
+    public void renderField(GameMap gameMap) {
+        HashMap<Coordinates, Entity> entityMap = gameMap.getMap();
+        for(int x = 0; x < 10; x++){
+            for(int y = 0; y < 10; y++){
+                Coordinates coordinates = new Coordinates(x, y);
+
+                if(entityMap.containsKey(coordinates) && entityMap.get(coordinates) != null){
+                    Entity entity = entityMap.get(coordinates);
+                    System.out.print(entity.getEmoji());
                 } else {
-                    System.out.print(new Ground(currentCords));
+                    Ground ground = new Ground(coordinates);
+                    System.out.print(ground.getEmoji());
                 }
-                System.out.println();
             }
+            System.out.println();
         }
     }
 }
