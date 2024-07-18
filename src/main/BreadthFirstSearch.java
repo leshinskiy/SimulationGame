@@ -47,17 +47,17 @@ public class BreadthFirstSearch {
 
         ArrayList<Coordinates> findCellNeighbours (Coordinates cell){
             ArrayList<Coordinates> neighbours = new ArrayList<>();
-            if (cell.getX() > 0) {
-                neighbours.add(new Coordinates(cell.getX() - 1, cell.getY()));
+            if (cell.getRow() > 0) {
+                neighbours.add(new Coordinates(cell.getRow() - 1, cell.getCol()));
             }
-            if (cell.getX() < 9) {
-                neighbours.add(new Coordinates(cell.getX() + 1, cell.getY()));
+            if (cell.getRow() < 9) {
+                neighbours.add(new Coordinates(cell.getRow() + 1, cell.getCol()));
             }
-            if (cell.getY() > 0) {
-                neighbours.add(new Coordinates(cell.getX(), cell.getY() - 1));
+            if (cell.getCol() > 0) {
+                neighbours.add(new Coordinates(cell.getRow(), cell.getCol() - 1));
             }
-            if (cell.getY() < 9) {
-                neighbours.add(new Coordinates(cell.getX(), cell.getY() + 1));
+            if (cell.getCol() < 9) {
+                neighbours.add(new Coordinates(cell.getRow(), cell.getCol() + 1));
             }
             return neighbours;
         }

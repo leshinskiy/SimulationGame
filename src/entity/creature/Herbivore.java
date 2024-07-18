@@ -53,11 +53,11 @@ public class Herbivore extends Creature {
                 return (Grass) value;
             }
         }
-
-        return null;
+        Grass grass = new Grass(gameMap.getFreeCoordinates()); // add grass if there is not a single one
+        gameMap.addEntity(grass, grass.getCoordinates());
+        return grass;
     }
-
-
 }
+
 
 

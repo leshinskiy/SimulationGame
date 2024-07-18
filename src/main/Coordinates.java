@@ -2,11 +2,11 @@ package main;
 
 public class Coordinates {
 
-    private int x, y;
+    private int row, col;
 
-    public Coordinates(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Coordinates(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
     @Override
@@ -15,30 +15,30 @@ public class Coordinates {
         if (o == null || getClass() != o.getClass()) return false;
         Coordinates that = (Coordinates) o;
 
-        if (x != that.x) return false;
-        return y == that.y;
+        if (row != that.row) return false;
+        return col == that.col;
     }
 
     @Override
     public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
+        int result = row;
+        result = 31 * result + col;
         return result;
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
     @Override
     public String toString() {
         return "Coordinates{" +
-                "row=" + x +
-                ", col=" + y +
+                "row=" + row +
+                ", col=" + col +
                 '}';
     }
 }
