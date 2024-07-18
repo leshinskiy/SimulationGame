@@ -93,9 +93,9 @@ public class GameMap {
         Coordinates coordinates;
 
         do {
-            int x = random.nextInt(10);
-            int y = random.nextInt(10);
-            coordinates = new Coordinates(x, y);
+            int row = random.nextInt(10);
+            int col = random.nextInt(10);
+            coordinates = new Coordinates(row, col);
         } while(map.containsKey(coordinates));
 
         return coordinates;
