@@ -1,8 +1,11 @@
 package main;
 
+import java.util.Objects;
+
 public class Coordinates {
 
-    private int row, col;
+    private final int row;
+    private final int col;
 
     public Coordinates(int row, int col) {
         this.row = row;
@@ -12,18 +15,17 @@ public class Coordinates {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
+
         Coordinates that = (Coordinates) o;
 
-        if (row != that.row) return false;
-        return col == that.col;
+        return col == that.col && row == that.row;
     }
 
     @Override
     public int hashCode() {
-        int result = row;
-        result = 31 * result + col;
-        return result;
+        return Objects.hash(row, col);
     }
 
     public int getRow() {
