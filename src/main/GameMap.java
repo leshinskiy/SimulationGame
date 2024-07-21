@@ -10,11 +10,19 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class GameMap {
-    private HashMap<Coordinates, Entity> map;
+    private final HashMap<Coordinates, Entity> map;
 
 
     public GameMap() {
         map = new HashMap<>();
+    }
+
+    public boolean isNeededClass(Coordinates coordinates, Class<? extends Entity> type ) {
+        Entity value = map.get(coordinates);
+        if(map.get(coordinates) == null) {
+            return false;
+        }
+        return value.getClass() == type;
     }
 
     public boolean isEntity(Coordinates coordinates){
@@ -34,9 +42,8 @@ public class GameMap {
 
     public void moveEntity(Coordinates from, Coordinates to){
         Entity entity = map.get(from);
-        map.put(to, entity);
         map.remove(from);
-
+        map.put(to, entity);
     }
 
 
@@ -76,17 +83,17 @@ public class GameMap {
         return arrayForHerbivore;
     }
 
-    public ArrayList<Coordinates> getNotAvailableCoordinates() { //get all coordinates where located static (immovable) objects to avoid them
-        ArrayList<Coordinates> coordinates = new ArrayList<>();
-
-        map.forEach((key, value) -> {
-            if(value.isStatic() || value instanceof Creature) {
-                coordinates.add(key);
-            }
-        });
-
-        return coordinates;
-    }
+//    public ArrayList<Coordinates> getNotAvailableCoordinates() { //get all coordinates where located static (immovable) objects to avoid them
+//        ArrayList<Coordinates> coordinates = new ArrayList<>();
+//
+//        map.forEach((key, value) -> {
+//            if(value.isStatic() || value instanceof Creature) {
+//                coordinates.add(key);
+//            }
+//        });
+//
+//        return coordinates;
+//    }
 
     public Coordinates getFreeCoordinates() {
         Random random = new Random();
