@@ -1,64 +1,75 @@
 package main;
 
+import entity.Entity;
 import java.util.*;
 
 public class BreadthFirstSearch {
-    public HashMap<Coordinates, Coordinates> breadthSearch(Coordinates start, Coordinates goal, GameMap gameMap) { // start means where is animal located; goal means what animal is looking for (could be either herbivore or grass)
-        Queue<Coordinates> queue = new LinkedList<>();
-        queue.add(start);
+   public Deque<Coordinates> pathSearch(Coordinates start, Class<? extends Entity> foodType, GameMap gameMap) {
+       System.out.println("Алгоритм поиска пути вызван");
+       Queue<Coordinates> queue = new LinkedList<>();   //queue for non-checked coordinates
+       queue.add(start);
 
-        HashMap<Coordinates, Coordinates> moves = new HashMap<>();
+       HashSet<Coordinates> visited = new HashSet<>();  //Set for visited coordinates
+       visited.add(start);
 
-        HashMap<Coordinates, Coordinates> path = new HashMap<>();
-
-        Set<Coordinates> visited = new HashSet<>();
-
-        visited.add(start);
+       HashMap<Coordinates, Coordinates> previousCoordinates = new HashMap<>();   // Map for path recovery
 
 
-        while (!queue.isEmpty()) {
-            Coordinates currentInQueue = queue.poll();
 
-            if (currentInQueue.equals(goal)) {
-                Coordinates currentStep = goal;
-
-                while (!currentStep.equals(start)) {
-                    path.put(moves.get(currentStep), currentStep);
-                    currentStep = moves.get(currentStep);
-                }
-                return path;
-            }
+       while(!queue.isEmpty()) {
+           Coordinates thisCoordinate = queue.poll();
+           Entity currentEntity = gameMap.getMap().get(thisCoordinate);
 
 
-            ArrayList<Coordinates> neighbours = findCellNeighbours(currentInQueue);
-            ArrayList<Coordinates> unavailableCoordinates = gameMap.getNotAvailableCoordinates();
-            for (Coordinates neighbour : neighbours) {
-                if (unavailableCoordinates.contains(neighbour) || visited.contains(neighbour)) {
-                    continue;
-                }
-                moves.put(neighbour, currentInQueue);
-                queue.add(neighbour);
-                visited.add(currentInQueue);
-            }
-        }
-        return path;
-    }
+           if(gameMap.getMap().get(thisCoordinate) != null) { // if we found what we looked for we recover path
+               if(currentEntity.getClass().equals(foodType)) {
+
+                    Deque<Coordinates> path = new ArrayDeque<>();
+                    Coordinates current = thisCoordinate;
+                    path.addFirst(current); // add last coordinate
+
+                    while (current != start) { // stop when reach start location
+                        path.addFirst(current);
+                        current = previousCoordinates.get(current);
+                    }
+                    path.removeLast(); // removing to not repeat same last coordinate
+
+                    System.out.println("Ласт координаты: " + path.getLast());
+                    System.out.println(path);
+                    return path;
+               }
+           }
+
+//           ArrayList<Coordinates> unreachableCoordinates = gameMap.getNotAvailableCoordinates(); // get all static and creatures location
+           for(Coordinates coordinate : adjacentCells(thisCoordinate) ){
+               if(visited.contains(coordinate)) {
+                   continue; // skip if visited
+               }
+
+               previousCoordinates.put(coordinate, thisCoordinate);
+               queue.add(coordinate);
+               visited.add(coordinate);
+           }
+       }
+       return new ArrayDeque<>(); // return empty Queue if coordinate not found to prevent NPE(Null Pointer Exception)
+   }
+
+   private ArrayList<Coordinates> adjacentCells(Coordinates cell) { // function to find all neighbours of current cell in range of [1,-1]
+       ArrayList<Coordinates> adjacentCells = new ArrayList<>();
+       if (cell.getRow() > 0) {
+           adjacentCells.add(new Coordinates(cell.getRow() - 1, cell.getCol()));
+       }
+       if (cell.getRow() < 9) {
+           adjacentCells.add(new Coordinates(cell.getRow() + 1, cell.getCol()));
+       }
+       if (cell.getCol() > 0) {
+           adjacentCells.add(new Coordinates(cell.getRow(), cell.getCol() - 1));
+       }
+       if (cell.getCol() < 9) {
+           adjacentCells.add(new Coordinates(cell.getRow(), cell.getCol() + 1));
+       }
+       return adjacentCells;
+   }
 
 
-        ArrayList<Coordinates> findCellNeighbours (Coordinates cell){
-            ArrayList<Coordinates> neighbours = new ArrayList<>();
-            if (cell.getRow() > 0) {
-                neighbours.add(new Coordinates(cell.getRow() - 1, cell.getCol()));
-            }
-            if (cell.getRow() < 9) {
-                neighbours.add(new Coordinates(cell.getRow() + 1, cell.getCol()));
-            }
-            if (cell.getCol() > 0) {
-                neighbours.add(new Coordinates(cell.getRow(), cell.getCol() - 1));
-            }
-            if (cell.getCol() < 9) {
-                neighbours.add(new Coordinates(cell.getRow(), cell.getCol() + 1));
-            }
-            return neighbours;
-        }
 }
