@@ -8,9 +8,9 @@ import java.util.HashMap;
 public class Renderer {
     public void renderField(GameMap gameMap) {
         HashMap<Coordinates, Entity> entityMap = gameMap.getMap();
-        for(int x = 0; x < 10; x++){
-            for(int y = 0; y < 10; y++){
-                Coordinates coordinates = new Coordinates(x, y);
+        for(int row = 0; row < 10; row++){
+            for(int col = 0; col < 10; col++){
+                Coordinates coordinates = new Coordinates(row, col);
 
                 if(entityMap.containsKey(coordinates) && entityMap.get(coordinates) != null){
                     Entity entity = entityMap.get(coordinates);
