@@ -1,70 +1,68 @@
 package entity.creature;
 
+import entity.Entity;
 import main.BreadthFirstSearch;
 import main.Coordinates;
 import main.GameMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Queue;
 import java.util.Random;
 
 public class Predator extends Creature {
 
     private final int attackDamage;
 
-
-    public Predator(Coordinates coordinates, String emoji, int health, int speed, int attackDamage) {
-        super(speed, health, emoji, coordinates);
+    public Predator(String emoji, int health, int speed, int attackDamage, Coordinates coordinates) {
+        super(emoji, health, speed, coordinates);
         this.attackDamage = attackDamage;
     }
 
 
-
     @Override
-    public void makeMove(GameMap gameMap, Creature predator){
+    public void makeMove(GameMap gameMap){
         BreadthFirstSearch bfs = new BreadthFirstSearch();
-        Herbivore herbivore = findHerbivore(gameMap);
-        System.out.println("хербивор: \n" + herbivore);
+        Queue<Coordinates> path = bfs.pathSearch(getCoordinates(), Herbivore.class, gameMap);
+        System.out.println("Путь хищника создан :" + path + "  размер " + path.size());
 
+        if(path.size() > getSpeed()) {
 
-        HashMap<Coordinates, Coordinates> path = bfs.breadthSearch(predator.getCoordinates(), herbivore.getCoordinates(), gameMap);
-
-        int distance = path.size(); // distance to Herbivore
-        
-        if(distance <= getSpeed()) {
-            for (int i = 0; i < distance - 1; i++) {
-                Coordinates currentLocation = getCoordinates();
-                Coordinates nextLocation = path.get(getCoordinates());
-
-                gameMap.moveEntity(currentLocation, nextLocation);
-                setCoordinates(nextLocation);
-            }
-            attackHerbivore(herbivore);
-        }
-
-        if (distance > getSpeed()) {
             for(int i = 0; i < getSpeed(); i++) {
-                Coordinates currentLocation = getCoordinates();
-                Coordinates nextLocation = path.get(getCoordinates());
+                System.out.println("Хищник перешел в (>)" + path.peek());
 
-                gameMap.moveEntity(currentLocation, nextLocation);
-                setCoordinates(nextLocation);
+                Entity entity = gameMap.getEntity(getCoordinates());
+                gameMap.removeEntity(getCoordinates());
+                setCoordinates(path.poll());
+                gameMap.addEntity(entity, getCoordinates());
             }
+
+            return;
         }
 
+        if(path.size() <= getSpeed()) {
+
+            for(int i = path.size(); path.size() != 1; i--) {
+                System.out.println("Хищник перешел в (<)" + path.peek());
+
+                Entity entity = gameMap.getEntity(getCoordinates());
+                gameMap.removeEntity(getCoordinates());
+                setCoordinates(path.poll());
+                gameMap.addEntity(entity, getCoordinates());
+            }
+
+            System.out.println("Хищник подобрался к жертве " + getCoordinates());
+            Herbivore prey = (Herbivore) gameMap.getEntity(path.peek());
+            System.out.println("Координаты жертвы: " + prey.getCoordinates());
+            System.out.println("Жертва: " + prey);
+            attackHerbivore(prey);
+            int preyHP = prey.getHealth();
+            System.out.println("Хищник атаковал жертву и снес ей " + preyHP + "хп");
+
+            if(preyHP == 0) {
+                return;
+            }
+        }
     }
-
-
-    private Herbivore findHerbivore(GameMap gameMap) {
-        ArrayList<Herbivore> herbivores = gameMap.arrayOfHerbivore();
-        Random random = new Random();
-
-        int randomIndex = random.nextInt(herbivores.size());
-
-        return herbivores.get(randomIndex);
-    }
-
-
 
 
     public void attackHerbivore(Herbivore herbivore) {

@@ -5,57 +5,59 @@ import entity.Grass;
 import main.BreadthFirstSearch;
 import main.Coordinates;
 import main.GameMap;
+import main.Renderer;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 
 public class Herbivore extends Creature {
 
-    public Herbivore(int speed, int health, String emoji, Coordinates coordinates) {
-        super(speed, health, emoji, coordinates);
+
+    public Herbivore(String emoji, int health, int speed, Coordinates coordinates) {
+        super(emoji, health, speed, coordinates);
     }
-
-
 
     public void consumeGrass(GameMap gameMap, Coordinates grass){
         gameMap.removeEntity(grass);
     }
 
     @Override
-    public void makeMove(GameMap gameMap, Creature herbivore) {
+    public void makeMove(GameMap gameMap) {
         BreadthFirstSearch bfs = new BreadthFirstSearch();
+        Queue<Coordinates> path = bfs.pathSearch(getCoordinates(), Grass.class, gameMap);
+        System.out.println("Путь херба создан :" + path + "  размер " + path.size());
 
-        Grass grass = findGrass(gameMap);
-        HashMap<Coordinates, Coordinates> path = bfs.breadthSearch(herbivore.getCoordinates(), grass.getCoordinates(), gameMap);
-        int distance = path.size();
+        if(path.size() > getSpeed()) {
 
+            for(int i = 0; i < path.size(); i++) {
 
-        if(distance <=  getSpeed()) {
-            consumeGrass(gameMap, grass.getCoordinates());
-            gameMap.moveEntity(herbivore.getCoordinates(), grass.getCoordinates());
-            setCoordinates(path.get(getCoordinates()));
-        }
-        if(distance > getSpeed()) {
-            for (int i = 0; i < getSpeed(); i++) { // herbivore moves *getSpeed()*  times making it look like it went straight for example 3 cells
-                gameMap.moveEntity(getCoordinates(), path.get(getCoordinates()));
-                setCoordinates(path.get(getCoordinates()));
+                System.out.println("Херб перешел в (>)" + path.peek());
+
+                Entity entity = gameMap.getEntity(getCoordinates()); // later remake into another private method if possible
+                gameMap.removeEntity(getCoordinates());
+                setCoordinates(path.poll());
+                gameMap.addEntity(entity, getCoordinates());
             }
+
+            return;
         }
 
-    }
+        if(path.size() <= getSpeed()) {
 
+            for(int i = path.size(); i == 1; i--) {
+                System.out.println("Херб перешел в (<)" + path.peek());
 
-    private Grass findGrass(GameMap gameMap) {
-
-        for (Map.Entry<Coordinates, Entity> entry : gameMap.getMap().entrySet()) {
-            Entity value = entry.getValue();
-            if (value instanceof Grass) {
-                return (Grass) value;
+                Entity entity = gameMap.getEntity(getCoordinates());
+                gameMap.removeEntity(getCoordinates());
+                setCoordinates(path.poll());
+                gameMap.addEntity(entity, getCoordinates());
             }
+
+            consumeGrass(gameMap, path.poll());
+            setCoordinates(path.peek());
+            System.out.println("Херб съел траву в " + getCoordinates());
         }
-        Grass grass = new Grass(gameMap.getFreeCoordinates()); // add grass if there is not a single one
-        gameMap.addEntity(grass, grass.getCoordinates());
-        return grass;
+
     }
 }
 

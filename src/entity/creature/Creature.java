@@ -10,14 +10,14 @@ public abstract class Creature extends Entity {
 
     private String emoji;
 
-    public Creature(int speed, int health, String emoji, Coordinates coordinates) {
+    public Creature(String emoji, int health, int speed, Coordinates coordinates) {
         super(coordinates);
         this.health = health;
         this.speed = speed;
         this.emoji = emoji;
     }
 
-    public abstract void makeMove(GameMap gameMap, Creature creature);
+    public abstract void makeMove(GameMap gameMap);
 
     @Override
     public boolean isStatic(){
