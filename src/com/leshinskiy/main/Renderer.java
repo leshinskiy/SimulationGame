@@ -1,7 +1,7 @@
-package main;
+package com.leshinskiy.main;
 
-import entity.Entity;
-import entity.Ground;
+import com.leshinskiy.entity.Entity;
+import com.leshinskiy.entity.Ground;
 
 import java.util.HashMap;
 

@@ -1,9 +1,10 @@
-package main;
+package com.leshinskiy.main;
 
-import entity.Entity;
-import entity.Grass;
-import entity.creature.Creature;
-import entity.creature.Herbivore;
+import com.leshinskiy.entity.Entity;
+import com.leshinskiy.entity.Grass;
+import com.leshinskiy.entity.creature.Creature;
+import com.leshinskiy.entity.creature.herbivores.Herbivore;
+import com.leshinskiy.entity.creature.predators.Predator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,17 +84,28 @@ public class GameMap {
         return arrayForHerbivore;
     }
 
-//    public ArrayList<Coordinates> getNotAvailableCoordinates() { //get all coordinates where located static (immovable) objects to avoid them
-//        ArrayList<Coordinates> coordinates = new ArrayList<>();
-//
-//        map.forEach((key, value) -> {
-//            if(value.isStatic() || value instanceof Creature) {
-//                coordinates.add(key);
-//            }
-//        });
-//
-//        return coordinates;
-//    }
+    public ArrayList<Coordinates> getNotAvailableCoordinates(Class<? extends Entity> type) { // get all coordinates where located static (immovable) objects to avoid them
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        if(type.equals(Predator.class)) {
+            map.forEach((key, value) -> {
+
+                if(value != null && value.isStatic() || value instanceof Predator ) {
+                    coordinates.add(key);
+                }
+            });
+        } else {
+            map.forEach((key, value) -> {
+                if(value != null && value.isStatic() || value instanceof Predator || value instanceof Herbivore) {
+                    coordinates.add(key);
+                }
+            });
+        }
+
+
+
+
+        return coordinates;
+    }
 
     public Coordinates getFreeCoordinates() {
         Random random = new Random();

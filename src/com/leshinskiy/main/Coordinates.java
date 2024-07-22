@@ -1,4 +1,4 @@
-package main;
+package com.leshinskiy.main;
 
 import java.util.Objects;
 

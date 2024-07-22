@@ -1,13 +1,13 @@
-package entity.creature;
+package com.leshinskiy.entity.creature.predators;
 
-import entity.Entity;
-import main.BreadthFirstSearch;
-import main.Coordinates;
-import main.GameMap;
+import com.leshinskiy.entity.Entity;
+import com.leshinskiy.entity.creature.Creature;
+import com.leshinskiy.entity.creature.herbivores.Herbivore;
+import com.leshinskiy.main.BreadthFirstSearch;
+import com.leshinskiy.main.Coordinates;
+import com.leshinskiy.main.GameMap;
 
-import java.util.ArrayList;
 import java.util.Queue;
-import java.util.Random;
 
 public class Predator extends Creature {
 
@@ -26,52 +26,48 @@ public class Predator extends Creature {
         System.out.println("Путь хищника создан :" + path + "  размер " + path.size());
 
         if(path.size() > getSpeed()) {
-
             for(int i = 0; i < getSpeed(); i++) {
                 System.out.println("Хищник перешел в (>)" + path.peek());
 
-                Entity entity = gameMap.getEntity(getCoordinates());
-                gameMap.removeEntity(getCoordinates());
+                gameMap.moveEntity(getCoordinates(), path.peek());
                 setCoordinates(path.poll());
-                gameMap.addEntity(entity, getCoordinates());
             }
-
             return;
         }
 
         if(path.size() <= getSpeed()) {
-
-            for(int i = path.size(); path.size() != 1; i--) {
+            for(int i = path.size(); i != 1; i--) {
                 System.out.println("Хищник перешел в (<)" + path.peek());
-
-                Entity entity = gameMap.getEntity(getCoordinates());
-                gameMap.removeEntity(getCoordinates());
+                gameMap.moveEntity(getCoordinates(), path.peek());
                 setCoordinates(path.poll());
-                gameMap.addEntity(entity, getCoordinates());
             }
 
             System.out.println("Хищник подобрался к жертве " + getCoordinates());
             Herbivore prey = (Herbivore) gameMap.getEntity(path.peek());
-            System.out.println("Координаты жертвы: " + prey.getCoordinates());
-            System.out.println("Жертва: " + prey);
             attackHerbivore(prey);
-            int preyHP = prey.getHealth();
-            System.out.println("Хищник атаковал жертву и снес ей " + preyHP + "хп");
 
-            if(preyHP == 0) {
-                return;
+            System.out.println("Хищник атаковал жертву. Хп жертвы: " + prey.getHealth() + "хп");
+
+            if(prey.getHealth() == 0) {
+                consumeFood(gameMap, path.poll());
             }
         }
     }
 
 
-    public void attackHerbivore(Herbivore herbivore) {
+    private void attackHerbivore(Herbivore herbivore) {
         if (attackDamage > herbivore.getHealth()) {
             herbivore.setHealth(0);
         } else {
             herbivore.setHealth(herbivore.getHealth() - attackDamage);
         }
+
+
     }
 
+    public void consumeFood(GameMap gameMap, Coordinates coordinates){
+        gameMap.moveEntity(getCoordinates(), coordinates);
+        setCoordinates(coordinates);
+    }
 
 }

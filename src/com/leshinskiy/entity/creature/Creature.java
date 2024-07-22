@@ -1,8 +1,8 @@
-package entity.creature;
+package com.leshinskiy.entity.creature;
 
-import entity.Entity;
-import main.Coordinates;
-import main.GameMap;
+import com.leshinskiy.entity.Entity;
+import com.leshinskiy.main.Coordinates;
+import com.leshinskiy.main.GameMap;
 
 public abstract class Creature extends Entity {
     private final int speed;
@@ -18,6 +18,8 @@ public abstract class Creature extends Entity {
     }
 
     public abstract void makeMove(GameMap gameMap);
+
+    public abstract void consumeFood(GameMap gameMap, Coordinates coordinates);
 
     @Override
     public boolean isStatic(){

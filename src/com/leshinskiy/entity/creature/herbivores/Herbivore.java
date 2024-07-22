@@ -1,13 +1,12 @@
-package entity.creature;
+package com.leshinskiy.entity.creature.herbivores;
 
-import entity.Entity;
-import entity.Grass;
-import main.BreadthFirstSearch;
-import main.Coordinates;
-import main.GameMap;
-import main.Renderer;
+import com.leshinskiy.entity.Entity;
+import com.leshinskiy.entity.Grass;
+import com.leshinskiy.entity.creature.Creature;
+import com.leshinskiy.main.BreadthFirstSearch;
+import com.leshinskiy.main.Coordinates;
+import com.leshinskiy.main.GameMap;
 
-import java.util.Map;
 import java.util.Queue;
 
 public class Herbivore extends Creature {
@@ -17,8 +16,9 @@ public class Herbivore extends Creature {
         super(emoji, health, speed, coordinates);
     }
 
-    public void consumeGrass(GameMap gameMap, Coordinates grass){
-        gameMap.removeEntity(grass);
+    public void consumeFood(GameMap gameMap, Coordinates grass){ //consume grass
+        gameMap.moveEntity(getCoordinates(), grass);
+        setCoordinates(grass);
     }
 
     @Override
@@ -42,20 +42,21 @@ public class Herbivore extends Creature {
             return;
         }
 
-        if(path.size() <= getSpeed()) {
+        if(path.size() != 1 && path.size() <= getSpeed()) {
 
             for(int i = path.size(); i == 1; i--) {
                 System.out.println("Херб перешел в (<)" + path.peek());
-
-                Entity entity = gameMap.getEntity(getCoordinates());
-                gameMap.removeEntity(getCoordinates());
+                gameMap.moveEntity(getCoordinates(), path.peek());
                 setCoordinates(path.poll());
-                gameMap.addEntity(entity, getCoordinates());
             }
+            return;
+        }
 
-            consumeGrass(gameMap, path.poll());
-            setCoordinates(path.peek());
-            System.out.println("Херб съел траву в " + getCoordinates());
+        if(path.size() == 1) {
+            if(gameMap.getEntity(path.peek()) instanceof Grass) {
+                consumeFood(gameMap, path.poll());
+                System.out.println("Херб съел траву в " + getCoordinates());
+            }
         }
 
     }

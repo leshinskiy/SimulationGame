@@ -1,10 +1,10 @@
-package action;
+package com.leshinskiy.action;
 
-import entity.Grass;
-import entity.creature.Creature;
-import entity.creature.Herbivore;
-import main.Coordinates;
-import main.GameMap;
+import com.leshinskiy.entity.Grass;
+import com.leshinskiy.entity.creature.Creature;
+import com.leshinskiy.entity.creature.herbivores.Herbivore;
+import com.leshinskiy.main.Coordinates;
+import com.leshinskiy.main.GameMap;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class TurnAction {
         ArrayList<Creature> creatures = gameMap.arrayOfCreatures();
 
         for(Creature creature : creatures) {
-            creature.makeMove(gameMap, creature);
+            creature.makeMove(gameMap);
         }
 
         //isGrassOnMap(gameMap);
@@ -35,9 +35,9 @@ public class TurnAction {
     private void isHerbivoresOnMap(GameMap gameMap) {
         ArrayList<Herbivore> herbivores = gameMap.arrayOfHerbivore();
 
-        if(herbivores.size() < 2) {
-            Coordinates coordinates = gameMap.getFreeCoordinates();
-            gameMap.addEntity(new Herbivore(1, 20, "🐑", coordinates), coordinates);
+        if(herbivores.size() < 3) {
+
+
         }
     }
 }

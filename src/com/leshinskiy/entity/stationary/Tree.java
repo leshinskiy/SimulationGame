@@ -1,7 +1,7 @@
-package entity.stationary;
+package com.leshinskiy.entity.stationary;
 
-import entity.Entity;
-import main.Coordinates;
+import com.leshinskiy.entity.Entity;
+import com.leshinskiy.main.Coordinates;
 
 public class Tree extends Entity {
     public final String emoji = "🌳";

@@ -1,6 +1,8 @@
-package main;
+package com.leshinskiy.main;
 
-import entity.Entity;
+import com.leshinskiy.entity.Entity;
+import com.leshinskiy.entity.creature.predators.Predator;
+
 import java.util.*;
 
 public class BreadthFirstSearch {
@@ -40,10 +42,11 @@ public class BreadthFirstSearch {
                }
            }
 
-//           ArrayList<Coordinates> unreachableCoordinates = gameMap.getNotAvailableCoordinates(); // get all static and creatures location
+           Class<? extends Entity> classType = gameMap.getEntity(start).getClass(); // type of who is searching
+           ArrayList<Coordinates> unreachableCoordinates = gameMap.getNotAvailableCoordinates(classType); // get all static and predator location
            for(Coordinates coordinate : adjacentCells(thisCoordinate) ){
-               if(visited.contains(coordinate)) {
-                   continue; // skip if visited
+               if(visited.contains(coordinate) || unreachableCoordinates.contains(coordinate)) {
+                   continue; // skip if visited or predator
                }
 
                previousCoordinates.put(coordinate, thisCoordinate);
@@ -55,6 +58,7 @@ public class BreadthFirstSearch {
    }
 
    private ArrayList<Coordinates> adjacentCells(Coordinates cell) { // function to find all neighbours of current cell in range of [1,-1]
+
        ArrayList<Coordinates> adjacentCells = new ArrayList<>();
        if (cell.getRow() > 0) {
            adjacentCells.add(new Coordinates(cell.getRow() - 1, cell.getCol()));

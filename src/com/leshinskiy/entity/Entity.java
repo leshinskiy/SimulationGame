@@ -1,5 +1,5 @@
-package entity;
-import main.Coordinates;
+package com.leshinskiy.entity;
+import com.leshinskiy.main.Coordinates;
 public abstract class Entity {
     protected Coordinates coordinates;
     private String emoji;

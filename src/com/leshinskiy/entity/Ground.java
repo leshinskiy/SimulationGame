@@ -1,6 +1,6 @@
-package entity;
+package com.leshinskiy.entity;
 
-import main.Coordinates;
+import com.leshinskiy.main.Coordinates;
 
 public class Ground extends Entity{
     private String emoji = "⬛";

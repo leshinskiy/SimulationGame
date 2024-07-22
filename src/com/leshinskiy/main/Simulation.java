@@ -1,7 +1,7 @@
-package main;
+package com.leshinskiy.main;
 
-import action.InitAction;
-import action.TurnAction;
+import com.leshinskiy.action.InitAction;
+import com.leshinskiy.action.TurnAction;
 
 public class Simulation {
     public void startSimulation(){
