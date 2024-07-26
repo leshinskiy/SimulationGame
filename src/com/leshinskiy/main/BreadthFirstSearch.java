@@ -7,7 +7,6 @@ import java.util.*;
 
 public class BreadthFirstSearch {
    public Deque<Coordinates> pathSearch(Coordinates start, Class<? extends Entity> foodType, GameMap gameMap) {
-       System.out.println("Алгоритм поиска пути вызван");
        Queue<Coordinates> queue = new LinkedList<>();   //queue for non-checked coordinates
        queue.add(start);
 
@@ -36,12 +35,12 @@ public class BreadthFirstSearch {
                     }
                     path.removeLast(); // removing to not repeat same last coordinate
 
-                    System.out.println("Ласт координаты: " + path.getLast());
-                    System.out.println(path);
                     return path;
                }
            }
-
+           if(gameMap.getEntity(start) == null) {
+               System.out.println("Тут нуль " + start);
+           }
            Class<? extends Entity> classType = gameMap.getEntity(start).getClass(); // type of who is searching
            ArrayList<Coordinates> unreachableCoordinates = gameMap.getNotAvailableCoordinates(classType); // get all static and predator location
            for(Coordinates coordinate : adjacentCells(thisCoordinate) ){

@@ -4,7 +4,7 @@ import com.leshinskiy.entity.Entity;
 import com.leshinskiy.main.Coordinates;
 
 public class Rock extends Entity {
-    private String emoji = "🌑";
+    private String emoji = "🗻";
 
     public Rock(Coordinates coordinates){
         super(coordinates);

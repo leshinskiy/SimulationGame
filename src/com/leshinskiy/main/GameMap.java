@@ -18,18 +18,6 @@ public class GameMap {
         map = new HashMap<>();
     }
 
-    public boolean isNeededClass(Coordinates coordinates, Class<? extends Entity> type ) {
-        Entity value = map.get(coordinates);
-        if(map.get(coordinates) == null) {
-            return false;
-        }
-        return value.getClass() == type;
-    }
-
-    public boolean isEntity(Coordinates coordinates){
-        return map.get(coordinates) != null;
-    }
-
 
     public void addEntity(Entity entity, Coordinates coordinates){
         map.put(coordinates, entity);
@@ -52,7 +40,7 @@ public class GameMap {
         ArrayList<Creature> arrayForCreatures = new ArrayList<>();
 
         map.forEach((key, value) -> {
-            if(value instanceof Creature) {
+            if(value instanceof Creature && value.getCoordinates() != null) {
                 arrayForCreatures.add((Creature) value);
             }
         });
@@ -100,9 +88,6 @@ public class GameMap {
                 }
             });
         }
-
-
-
 
         return coordinates;
     }

@@ -17,48 +17,46 @@ public class Herbivore extends Creature {
     }
 
     public void consumeFood(GameMap gameMap, Coordinates grass){ //consume grass
+        gameMap.removeEntity(grass);
         gameMap.moveEntity(getCoordinates(), grass);
         setCoordinates(grass);
     }
 
     @Override
     public void makeMove(GameMap gameMap) {
-        BreadthFirstSearch bfs = new BreadthFirstSearch();
-        Queue<Coordinates> path = bfs.pathSearch(getCoordinates(), Grass.class, gameMap);
-        System.out.println("Путь херба создан :" + path + "  размер " + path.size());
+        if(getHealth() > 0) {
 
-        if(path.size() > getSpeed()) {
+            BreadthFirstSearch bfs = new BreadthFirstSearch();
+            Queue<Coordinates> path = bfs.pathSearch(getCoordinates(), Grass.class, gameMap);
 
-            for(int i = 0; i < path.size(); i++) {
 
-                System.out.println("Херб перешел в (>)" + path.peek());
+            if (path.size() > getSpeed()) {
 
-                Entity entity = gameMap.getEntity(getCoordinates()); // later remake into another private method if possible
-                gameMap.removeEntity(getCoordinates());
-                setCoordinates(path.poll());
-                gameMap.addEntity(entity, getCoordinates());
+                for (int i = 0; i < getSpeed(); i++) {
+                    gameMap.moveEntity(getCoordinates(), path.peek());
+                    setCoordinates(path.poll());
+                }
+                return;
             }
 
-            return;
-        }
+            if (path.size() != 1 && path.size() <= getSpeed()) {
 
-        if(path.size() != 1 && path.size() <= getSpeed()) {
-
-            for(int i = path.size(); i == 1; i--) {
-                System.out.println("Херб перешел в (<)" + path.peek());
-                gameMap.moveEntity(getCoordinates(), path.peek());
-                setCoordinates(path.poll());
+                for (int i = getSpeed(); i != 1; i--) {
+                    if(path.size() == 1) {
+                        continue;
+                    }
+                    gameMap.moveEntity(getCoordinates(), path.peek());
+                    setCoordinates(path.poll());
+                }
+                return;
             }
-            return;
-        }
 
-        if(path.size() == 1) {
-            if(gameMap.getEntity(path.peek()) instanceof Grass) {
-                consumeFood(gameMap, path.poll());
-                System.out.println("Херб съел траву в " + getCoordinates());
+            if (path.size() == 1) {
+                if (gameMap.getEntity(path.peek()) instanceof Grass) {
+                    consumeFood(gameMap, path.poll());
+                }
             }
         }
-
     }
 }
 
