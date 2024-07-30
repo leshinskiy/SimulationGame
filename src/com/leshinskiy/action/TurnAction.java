@@ -30,9 +30,9 @@ public class TurnAction {
         ArrayList<Grass> grass = gameMap.arrayOfGrass();
 
         if(grass.size() < 3) {
-            createAction.spawnGrass(gameMap);
-            createAction.spawnGrass(gameMap);
-            createAction.spawnGrass(gameMap);
+           for(int i = 0; i < 3; i++) {
+               createAction.spawnGrass(gameMap);
+           }
         }
 
     }
@@ -42,10 +42,9 @@ public class TurnAction {
         ArrayList<Herbivore> herbivores = gameMap.arrayOfHerbivore();
 
         if(herbivores.isEmpty()) {
-            createAction.spawnHerbivore(gameMap);
-            createAction.spawnHerbivore(gameMap);
-            createAction.spawnHerbivore(gameMap);
-            createAction.spawnHerbivore(gameMap);
+            for(int i = 0; i < 3; i++) {
+                createAction.spawnHerbivore(gameMap);
+            }
         }
     }
 
