@@ -20,7 +20,7 @@ public class Simulation {
         while (gameStatus) {
             nextTurn();
             try {
-                Thread.sleep(1500);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -32,7 +32,6 @@ public class Simulation {
         System.out.println("Количество ходов: " + turnCounter + "\n");
 
         renderer.renderField(gameMap);
-
         turnAction.makeTurn(gameMap);
 
 

@@ -92,7 +92,7 @@ public class GameMap {
         return coordinates;
     }
 
-    public Coordinates getFreeCoordinates() {
+    public Coordinates getFreeCoordinates() { // not the best way to find free cords but i guess it works
         Random random = new Random();
         Coordinates coordinates;
 

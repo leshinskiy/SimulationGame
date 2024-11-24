@@ -10,7 +10,7 @@ import com.leshinskiy.main.GameMap;
 
 public class CreateAction {
     public void spawnHerbivore(GameMap gameMap) {
-        Entity herbivore = new Herbivore("🐑", 5, 2, gameMap.getFreeCoordinates());
+        Entity herbivore = new Herbivore("🐑", 6, 2, gameMap.getFreeCoordinates());
         gameMap.addEntity(herbivore, herbivore.getCoordinates());
     }
 
