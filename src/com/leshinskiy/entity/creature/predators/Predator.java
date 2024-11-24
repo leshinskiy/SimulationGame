@@ -23,6 +23,7 @@ public class Predator extends Creature {
     public void makeMove(GameMap gameMap){
 
         BreadthFirstSearch bfs = new BreadthFirstSearch();
+
         Queue<Coordinates> path = bfs.pathSearch(getCoordinates(), Herbivore.class, gameMap);
 
 
@@ -68,8 +69,6 @@ public class Predator extends Creature {
 
         gameMap.addEntity(this, herbivore);
         this.setCoordinates(herbivore);
-
-        System.out.println("Хищник съел добычу!");
     }
 
 }

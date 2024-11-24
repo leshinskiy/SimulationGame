@@ -1,6 +1,5 @@
 package com.leshinskiy.main;
 
-import com.leshinskiy.action.CreateAction;
 import com.leshinskiy.action.InitAction;
 import com.leshinskiy.action.TurnAction;
 
@@ -8,35 +7,22 @@ import java.util.Scanner;
 
 public class Simulation {
     private int turnCounter;
-    private boolean gameStatus = false;
+    private boolean gameStatus = true;
+
     GameMap gameMap = new GameMap();
     Renderer renderer = new Renderer();
     InitAction initAction = new InitAction();
     TurnAction turnAction = new TurnAction();
-    public void startSimulation(){
+
+    public void startSimulation() {
         initAction.initializeMap(gameMap);
 
-        gameStatus = true;
-        while(gameStatus) {
+        while (gameStatus) {
             nextTurn();
             try {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Если вы хотите продолжить нажмите Enter или введите любой символ\nЕсли вы хотите остановить симуляцию введите Y");
-                String playerStatus;
-
-                do {
-                    playerStatus = scanner.nextLine();
-                } while (playerStatus.length() > 1);
-
-                if("y".equalsIgnoreCase(playerStatus)) {
-                    pauseSimulation();
-                } else {
-                    System.out.println("Продолжаю игру...\n");
-                }
-
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
@@ -51,11 +37,5 @@ public class Simulation {
 
 
     }
-
-    public void pauseSimulation() {
-        System.out.println("Симуляция остановлена...");
-        gameStatus = false;
-    }
-
 
 }

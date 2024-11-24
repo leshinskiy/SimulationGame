@@ -1,6 +1,5 @@
 package com.leshinskiy.entity.creature.herbivores;
 
-import com.leshinskiy.entity.Entity;
 import com.leshinskiy.entity.Grass;
 import com.leshinskiy.entity.creature.Creature;
 import com.leshinskiy.main.BreadthFirstSearch;
@@ -27,6 +26,7 @@ public class Herbivore extends Creature {
         if(getHealth() > 0) {
 
             BreadthFirstSearch bfs = new BreadthFirstSearch();
+
             Queue<Coordinates> path = bfs.pathSearch(getCoordinates(), Grass.class, gameMap);
 
 

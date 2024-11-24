@@ -8,6 +8,8 @@ import java.util.HashMap;
 public class Renderer {
     public void renderField(GameMap gameMap) {
         HashMap<Coordinates, Entity> entityMap = gameMap.getMap();
+
+
         for(int row = 0; row < 10; row++){
             for(int col = 0; col < 10; col++){
                 Coordinates coordinates = new Coordinates(row, col);
