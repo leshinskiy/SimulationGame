@@ -18,9 +18,8 @@ public class GameMap {
         map = new HashMap<>();
     }
 
-
-    public void addEntity(Entity entity, Coordinates coordinates){
-        map.put(coordinates, entity);
+    public <E> void addEntity(E entity, Coordinates coordinates) {
+        map.put(coordinates, (Entity) entity);
     }
 
 
