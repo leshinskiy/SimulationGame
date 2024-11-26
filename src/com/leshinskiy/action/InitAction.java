@@ -4,11 +4,11 @@ package com.leshinskiy.action;
 import com.leshinskiy.main.GameMap;
 
 public class InitAction extends Actions{
-    public final int HERBIVORE_COUNT = 4;
+    public final int HERBIVORE_COUNT = 6;
     public final int PREDATOR_COUNT = 2;
-    public final int GRASS_COUNT = 10;
-    public final int ROCK_COUNT = 3;
-    public final int TREE_COUNT = 3;
+    public final int GRASS_COUNT = 20;
+    public final int ROCK_COUNT = 6;
+    public final int TREE_COUNT = 14;
 
     public void initializeMap(GameMap gameMap) {
         CreateAction createAction = new CreateAction();

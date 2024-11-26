@@ -10,12 +10,12 @@ import com.leshinskiy.main.GameMap;
 
 public class CreateAction {
     public void spawnHerbivore(GameMap gameMap) {
-        Entity herbivore = new Herbivore("🐑", 6, 2, gameMap.getFreeCoordinates());
+        Entity herbivore = new Herbivore("🐑", 8, 1, gameMap.getFreeCoordinates());
         gameMap.addEntity(herbivore, herbivore.getCoordinates());
     }
 
     public void spawnPredator(GameMap gameMap) {
-        Entity predator = new Predator("🐅", 10, 3, 2, gameMap.getFreeCoordinates());
+        Entity predator = new Predator("🐅", 10, 2, 2, gameMap.getFreeCoordinates());
         gameMap.addEntity(predator, predator.getCoordinates());
     }
 

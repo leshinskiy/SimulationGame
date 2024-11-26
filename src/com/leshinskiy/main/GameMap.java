@@ -8,6 +8,7 @@ import com.leshinskiy.entity.creature.predators.Predator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class GameMap {
@@ -91,17 +92,22 @@ public class GameMap {
         return coordinates;
     }
 
-    public Coordinates getFreeCoordinates() { // not the best way to find free cords but i guess it works
-        Random random = new Random();
+    public Coordinates getFreeCoordinates() {   // works really slow, needs to be redone
         Coordinates coordinates;
+        List<Coordinates> freeCoordinates = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    coordinates = new Coordinates(i, j);
+                    if(!map.containsKey(coordinates)) {
+                        freeCoordinates.add(coordinates);
+                    }
+                }
+            }
 
-        do {
-            int row = random.nextInt(10);
-            int col = random.nextInt(10);
-            coordinates = new Coordinates(row, col);
-        } while(map.containsKey(coordinates));
+            Random rand = new Random();
+            int size = freeCoordinates.size();
 
-        return coordinates;
+        return freeCoordinates.get(rand.nextInt(size));
     }
 
 
